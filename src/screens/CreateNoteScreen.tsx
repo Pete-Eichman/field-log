@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
-import { v4 as uuidv4 } from 'uuid';
+import * as Crypto from 'expo-crypto';
 import { FieldNote, insertNote } from '../db/db';
 import { getCurrentLocation } from '../utils/location';
 import { pickFromLibrary, takePhoto } from '../utils/photos';
@@ -73,23 +73,27 @@ export default function CreateNoteScreen() {
       return;
     }
 
-    const now = new Date().toISOString();
-    const note: FieldNote = {
-      id: uuidv4(),
-      title: title.trim(),
-      body: body.trim(),
-      category,
-      photos,
-      latitude,
-      longitude,
-      address,
-      createdAt: now,
-      updatedAt: now,
-    };
+    try {
+      const now = new Date().toISOString();
+      const note: FieldNote = {
+        id: Crypto.randomUUID(),
+        title: title.trim(),
+        body: body.trim(),
+        category,
+        photos,
+        latitude,
+        longitude,
+        address,
+        createdAt: now,
+        updatedAt: now,
+      };
 
-    await insertNote(note);
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    navigation.goBack();
+      await insertNote(note);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      navigation.goBack();
+    } catch (e) {
+      Alert.alert('Save failed', String(e));
+    }
   }
 
   const locationText = locating
