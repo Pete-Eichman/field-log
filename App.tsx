@@ -3,10 +3,12 @@ import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AppNavigator from './src/navigation';
 import { initDatabase } from './src/db/db';
+import { seedIfEmpty } from './src/db/seed';
 
 export default function App() {
   useEffect(() => {
     initDatabase();
+    seedIfEmpty();
   }, []);
 
   return (
