@@ -19,6 +19,7 @@ type NavProp = NativeStackNavigationProp<NotesStackParamList, 'NotesList'>;
 export default function NotesListScreen() {
   const navigation = useNavigation<NavProp>();
   const [notes, setNotes] = useState<FieldNote[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -40,6 +41,12 @@ export default function NotesListScreen() {
       getAllNotes().then(setNotes);
     }, [])
   );
+
+  async function handleRefresh() {
+    setRefreshing(true);
+    await getAllNotes().then(setNotes);
+    setRefreshing(false);
+  }
 
   function handleDelete(id: string) {
     Alert.alert('Delete note', 'This cannot be undone.', [
@@ -78,6 +85,8 @@ export default function NotesListScreen() {
             onDelete={() => handleDelete(item.id)}
           />
         )}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
       />
     </View>
   );
