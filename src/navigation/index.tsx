@@ -22,7 +22,7 @@ export type NotesStackParamList = {
 };
 
 export type RootTabParamList = {
-  NotesTab: undefined;
+  NotesTab: { screen: keyof NotesStackParamList; params?: object } | undefined;
   MapTab: undefined;
   SettingsTab: undefined;
 };
