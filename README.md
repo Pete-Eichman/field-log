@@ -70,3 +70,13 @@ All notes stay on-device. There's no auth layer, no API calls, and no sync engin
 **Managed Expo workflow**
 
 The app uses Expo's managed workflow rather than bare React Native. This trades some native flexibility for a dramatically faster setup and a smaller surface area of things that can go wrong during development. For a portfolio app that exercises native capabilities through Expo's own modules (camera, location, sqlite, haptics), the managed workflow is the right call.
+
+---
+
+## Testing
+
+```bash
+npm test
+```
+
+The test suite covers `src/db/db.ts` (all five CRUD functions, row mapping, JSON serialization) and `src/utils/formatDate.ts`. expo-sqlite is mocked so the tests run without a device or simulator. 13 tests, no snapshots.
